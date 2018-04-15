@@ -1,0 +1,33 @@
+---
+driver:
+  name: vagrant
+
+verifier:
+  name: inspec
+
+provisioner:
+  name: ansible_playbook
+  hosts: localhost
+  ansible_yum_repo: "https://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm"
+  ansible_cfg_path: test/ansible.cfg
+  require_chef_for_busser: false
+  require_ruby_for_busser: false
+  ansible_host_key_checking: false
+  additional_copy_role_path: []
+    #- test/roles/oracle-java
+
+platforms:
+  - name: centos-7.2
+
+suites:
+  - name: default
+    verifier:
+        inspec_tests: []
+          #- name: jenkins
+          #  git: http://inspec/jenkins
+    provisioner:
+      hosts: all
+      name: ansible_playbook
+      playbook: test/test.yml
+      additional_copy_path:
+        - "."
